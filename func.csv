@@ -1,0 +1,85 @@
+name,smarts
+fr_C=O,[CX3]=[OX1]
+fr_Ar_OH,c[OH1]
+fr_methoxy,[OX2](-[#6])-[CH3]
+fr_oxime,[CX3]=[NX2]-[OX2]
+fr_ester,[#6][CX3](=O)[OX2H0][#6]
+fr_ketone,[#6][CX3](=O)[#6]
+fr_ether,[OD2]([#6])[#6]
+fr_phenol,[OX2H]-c1ccccc1
+fr_aldehyde,[CX3H1](=O)[#6]
+fr_Ar_N,n
+fr_Ar_NH,[nH]
+fr_Imine,[Nv3](=C)-[#6]
+fr_nitrile,[NX1]#[CX2]
+fr_hdrzine,[NX3]-[NX3]
+fr_hdrzone,C=N-[NX3]
+fr_nitro,N(=O)(O)[#6]
+fr_azo,[#6]-N=N-[#6]
+fr_diazo,[N+]#N
+fr_amide,C(=O)-N
+fr_priamide,C(=O)-[NH2]
+fr_amidine,C(=N)(-N)-[!#7]
+fr_guanido,C(=N)(N)N    
+fr_imide,N(-C(=O))-C=O
+fr_isocyan,N=C=O
+fr_isothiocyan,N=C=S
+fr_thiocyan,S-C#N
+fr_sulfide,[SX2](-[#6])-C
+fr_SH,[SH]
+fr_C=S,C=[SX1]
+fr_barbitur,C1C(=O)NC(=O)NC1=O
+fr_urea,C(=O)(-N)-N
+fr_term_acetylene,C#[CH]
+fr_imidazole,n1cncc1
+fr_furan,o1cccc1
+fr_thiophene,s1cccc1
+fr_thiazole,c1scnc1
+fr_oxazole,c1ocnc1
+fr_pyridine,n1ccccc1
+fr_piperdine,N1CCCCC1
+fr_piperzine,N1CCNCC1
+fr_morpholine,O1CCNCC1
+fr_lactam,N1C(=O)CC1
+fr_tetrazole,c1nnnn1
+fr_epoxide,O1CC1
+fr_benzene,c1ccccc1
+fr_alkyl_carbamate,C[NH1]C(=O)OC
+methyl amide,[N;D2]-[C;D3](=O)-[C;D1;H3]
+carboxylic acids,C(=O)[O;D1]
+carbonyl methyl ester,C(=O)[O;D2]-[C;D1;H3]
+terminal aldehyde,C(=O)-[C;D1]
+amide,C(=O)-[N;D1]
+carbonyl methyl,C(=O)-[C;D1;H3]
+isocyanate,[N;D2]=[C;D2]=[O;D1]
+isothiocyanate,[N;D2]=[C;D2]=[S;D1]
+nitro,[N;D3](=[O;D1])[O;D1]
+nitroso,[N;R0]=[O;D1]
+oximes,[N;R0]-[O;D1]
+Imines_1,[N;R0]-[C;D1;H3]
+Imines_2,[N;R0]=[C;D1;H2]
+terminal azo,[N;D2]=[N;D2]-[C;D1;H3]
+hydrazines,[N;D2]=[N;D1]
+diazo,[N;D2]#[N;D1]
+cyano,[C;D2]#[N;D1]
+primary sulfonamide,[S;D4](=[O;D1])(=[O;D1])-[N;D1]
+methyl sulfonamide,[N;D2]-[S;D4](=[O;D1])(=[O;D1])-[C;D1;H3]
+sulfonic acid,[S;D4](=O)(=O)-[O;D1]
+methyl ester sulfonyl,[S;D4](=O)(=O)-[O;D2]-[C;D1;H3]
+methyl sulfonyl,[S;D4](=O)(=O)-[C;D1;H3]
+sulfonyl chloride,[S;D4](=O)(=O)-[Cl]
+methyl sulfinyl,[S;D3](=O)-[C;D1]
+methylthio,[S;D2]-[C;D1;H3]
+thiols,[S;D1]
+fluorine,[#9]
+chlorine,[#17]
+bromine,[#35]
+iodine,[#53]
+t-butyl,[C;D4]([C;D1])([C;D1])-[C;D1]
+trifluoromethyl,[C;D4](F)(F)F
+acetylenes,[C;D2]#[C;D1;H]
+cyclopropyl,[C;D3]1-[C;D2]-[C;D2]1
+ethoxy,[O;D2]-[C;D2]-[C;D1;H3]
+methoxy,[O;D2]-[C;D1;H3]
+side-chain hydroxyls,[O;D1]
+primary amines,[N;D1]
