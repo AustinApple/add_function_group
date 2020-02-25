@@ -17,6 +17,7 @@ import shutil
 import tracemalloc
 #from memory_profiler import profile
 import time
+import argparse
 
 
 def canonize(smi):
@@ -113,8 +114,8 @@ if __name__ == '__main__':
     # ls_func_sma = data['smarts'].tolist()
     # ls_func_name = data['name'].tolist()
 
-    ls_func_sma = pd.read_csv(args['func'])['smarts'].tolist()
-    ls_func_name = pd.read_csv(args['func'])['name'].tolist()
+    ls_func_sma = pd.read_csv(args['function'])['smarts'].tolist()
+    ls_func_name = pd.read_csv(args['function'])['name'].tolist()
 
     ls_func_name_mol_num = []
     for i in range(len(ls_func_sma)):
