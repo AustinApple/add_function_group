@@ -59,6 +59,20 @@ def sub_att(mainmol,fun_mol,pair):
 
 
 if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--mainmol',
+                    help='main molecule', default='mainmol.csv')
+    parser.add_argument('-f', '--function',
+                    help='functional group you want to add on molecules', default='func.csv')
+    parser.add_argument('-o', '--output_path',
+                    help='the output path', default='OUTPUT')
+    parser.add_argument('-n', '--number',
+                    help='how many functional group you want to add', default=2, type=int)
+
+
+    args = vars(parser.parse_args())
+
     # disable RDKit logger
     RDLogger.DisableLog('rdApp.*')
 
@@ -67,7 +81,7 @@ if __name__ == '__main__':
 
     #============= create directory "output" ==========================
 
-    output_path = './output_multi'
+    output_path = args['output_path']
 
 
     if os.path.isdir(output_path):
@@ -81,11 +95,11 @@ if __name__ == '__main__':
     model_EA = load_model("model/ECFP_num_EA.h5")
     
     #=====================================================================
-    round = 3
+    round = args['number']
 
     #============== preparation for main molecules ===================
-    ls_main_smi = pd.read_csv("mainmol_atom.csv")['smiles'].tolist()
-    ls_main_name = pd.read_csv("mainmol_atom.csv")['name'].tolist()
+    ls_main_smi = pd.read_csv(args['mainmol'])['smiles'].tolist()
+    ls_main_name = pd.read_csv(args['mainmol'])['name'].tolist()
 
     ls_main_smi_name = []
     for i in range(len(ls_main_smi)):
@@ -99,8 +113,8 @@ if __name__ == '__main__':
     # ls_func_sma = data['smarts'].tolist()
     # ls_func_name = data['name'].tolist()
 
-    ls_func_sma = pd.read_csv("func.csv")['smarts'].tolist()
-    ls_func_name = pd.read_csv("func.csv")['name'].tolist()
+    ls_func_sma = pd.read_csv(args['func'])['smarts'].tolist()
+    ls_func_name = pd.read_csv(args['func'])['name'].tolist()
 
     ls_func_name_mol_num = []
     for i in range(len(ls_func_sma)):
