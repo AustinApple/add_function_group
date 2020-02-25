@@ -12,7 +12,7 @@ from rdkit.Chem import Fragments
 from rdkit.Chem.Draw import IPythonConsole
 from rdkit.Chem.Draw import MolDrawing, DrawingOptions,MolsToImage
 from rdkit import RDLogger
-import feature 
+from feature import molecules
 import shutil   
 import tracemalloc
 #from memory_profiler import profile
