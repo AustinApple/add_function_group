@@ -11,6 +11,7 @@ import openbabel
 import argparse
 from keras.models import load_model
 import tensorflow
+from tensorflow.contrib.keras import preprocessing
 
 class molecules():
     '''
@@ -50,9 +51,49 @@ class molecules():
                 continue
         return arr_fp
 
-# test
+    def one_hot(self, char_set):
+        '''
+        this function is to convert the smile inton one-hot encoding. 
+        Parameter char_set includes all the character in all the SMILES. 
+        '''
+    
+        char_to_int = dict((c,i) for i,c in enumerate(char_set))
+        list_seq=[]
+        for s in self.ls_smiles:
+            seq=[]                
+            j=0
+            while j<len(s):
+                if j<len(s)-1 and s[j:j+2] in char_set:
+                    seq.append(char_to_int[s[j:j+2]])
+                    j=j+2
+                elif s[j] in char_set:
+                    seq.append(char_to_int[s[j]])
+                    j=j+1
+            list_seq.append(seq)
+        
+        list_seq = preprocessing.sequence.pad_sequences(list_seq, padding='post')
+        
+        one_hot = np.zeros((list_seq.shape[0], list_seq.shape[1]+4, len(char_set)), dtype=np.int32)
 
-model = load_model("model/ECFP_num_IE.h5")
-a = molecules(['C1COC(=O)O1', 'O=C(OCC)OCC'])
-fp_ECFP = a.ECFP_num()
-IE = model.predict(fp_ECFP)
+        for si, ss in enumerate(list_seq):
+            for cj, cc in enumerate(ss):
+                one_hot[si,cj+1,cc] = 1
+
+            one_hot[si,-1,0] = 1
+            one_hot[si,-2,0] = 1
+            one_hot[si,-3,0] = 1
+
+        return one_hot[:,0:-1,:], one_hot[:,1:,:]
+        
+        
+
+# test
+if __name__ == '__main__':
+    model_IE = load_model("model/ECFP_num_IE.h5")
+    model_EA = load_model("model/ECFP_num_EA.h5")
+    a = molecules(['N#C[SH](N)(C=O)O1C=CN=C1'])
+    fp_ECFP = a.ECFP_num()
+    IE = model_IE.predict(fp_ECFP)
+    EA = model_EA.predict(fp_ECFP)
+
+    print(IE, EA)
