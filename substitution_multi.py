@@ -7,7 +7,6 @@ import random
 from itertools import combinations
 from keras.models import load_model
 import openbabel
-from biopandas.mol2 import PandasMol2
 from rdkit.Chem import Fragments
 from rdkit.Chem.Draw import IPythonConsole
 from rdkit.Chem.Draw import MolDrawing, DrawingOptions,MolsToImage

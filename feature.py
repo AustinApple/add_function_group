@@ -6,7 +6,6 @@ import pandas as pd
 import openbabel
 import numpy as np 
 import os 
-from biopandas.mol2 import PandasMol2
 import openbabel
 import argparse
 from keras.models import load_model
