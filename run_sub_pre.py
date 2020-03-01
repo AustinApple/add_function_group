@@ -152,6 +152,8 @@ if __name__ == '__main__':
     df = df.drop_duplicates("smiles").reset_index(drop=True)
     df.to_csv(output_path+'/all.csv', index=False)
     
+
+    
     time_end=time.time()
     print('time cost',time_end-time_start,'s')
 
