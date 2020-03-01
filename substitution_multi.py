@@ -68,7 +68,7 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output_path',
                     help='the output path', default='OUTPUT')
     parser.add_argument('-n', '--number',
-                    help='how many functional groups you want to add', default=2, type=int)
+                    help='how many   functional groups you want to add', default=2, type=int)
     args = vars(parser.parse_args())
     
     # disable RDKit logger
