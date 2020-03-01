@@ -137,7 +137,21 @@ if __name__ == '__main__':
 
             data = pd.DataFrame({'smiles':ls_submol_all, 'IE':ls_submol_IE_all, 'EA':ls_submol_EA_all})
             data.to_csv(output_path+'/'+mainmol[1]+'_'+func[0]+'.csv', index=False)
-            
+    
+    #========= concat all the generated molecules =====================
+    sub_file = os.listdir(output_path)
+    ls_df_all = []
+    i=0
+    # to prevent memory leaks
+    for batch in range(len(sub_file)):
+        ls_df = [pd.read_csv(output_path+'/'+name) for name in sub_file[i:i+1]]
+        ls_df_all.extend(ls_df)     
+        i = i + 1
+    
+    df = pd.concat(ls_df_all, ignore_index=True)
+    df = df.drop_duplicates("smiles").reset_index(drop=True)
+    df.to_csv(output_path+'/all.csv', index=False)
+    
     time_end=time.time()
     print('time cost',time_end-time_start,'s')
 
