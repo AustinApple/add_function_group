@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd  
 import os
-os.environ["KERAS_BACKEND"] = "tensorflow"
-
 from keras.models import load_model
 import feature 
 import time
