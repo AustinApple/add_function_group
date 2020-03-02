@@ -1,11 +1,20 @@
 import numpy as np
 import pandas as pd  
 import os
+os.environ["KERAS_BACKEND"] = "tensorflow"
+
 from keras.models import load_model
 import feature 
 import time
 import argparse
-from substitution_multi import canonize, canonize_ls, sub_pair, sub_att 
+from substitution_multi import canonize, canonize_ls, sub_pair, sub_att
+from rdkit import RDLogger 
+import shutil
+from rdkit import Chem
+import os
+import tensorflow
+
+
 
 if __name__ == '__main__':
 
@@ -40,8 +49,8 @@ if __name__ == '__main__':
         os.mkdir(output_path)
 
     #============= reload model which had been trained to predict IE and EA ================
-    model_IE = load_model("model/ECFP_num_IE.h5")
-    model_EA = load_model("model/ECFP_num_EA.h5")
+    model_IE = load_model("model_ECFP/ECFP_num_IE.h5")
+    model_EA = load_model("model_ECFP/ECFP_num_EA.h5")
     
     #=====================================================================
     round = args['number']
