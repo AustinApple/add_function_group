@@ -13,7 +13,7 @@ from feature import molecules
 #os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 # pre-defined parameters
-beta=10000.
+
 char_set=[" ", "@", "H", "N", "S", "o", "i", "6", "I", "]", "P", "5", ")", "4", "8", "B", "F", 
            "3", "9", "c", "-", "2", "p", "0", "n", "C", "(", "=", "+", "#", "1", "/", "7", 
            "s", "O", "[", "Cl", "Br", "\\"]
@@ -34,8 +34,9 @@ model = Model(seqlen_x=seqlen_x, dim_x=dim_x, dim_y=dim_y, char_set=char_set)
 with model.session:
     model.reload(model_name='model_SMILES/model')
     Y_hat=scaler_Y.inverse_transform(model.predict(X))
-    print(Y_hat)
-
+    # print(Y_hat)
+    print(Y_hat[:,0])
+    print(Y_hat[:,1])
 
 
 

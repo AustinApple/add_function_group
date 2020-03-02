@@ -50,6 +50,7 @@ class molecules():
                 continue
         return arr_fp
 
+
     def one_hot(self, char_set):
         '''
         this function is to convert the smile inton one-hot encoding. 
@@ -69,7 +70,7 @@ class molecules():
                     seq.append(char_to_int[s[j]])
                     j=j+1
             list_seq.append(seq)
-        
+             
         list_seq = preprocessing.sequence.pad_sequences(list_seq, padding='post')
         
         one_hot = np.zeros((list_seq.shape[0], list_seq.shape[1]+4, len(char_set)), dtype=np.int32)
@@ -77,22 +78,44 @@ class molecules():
         for si, ss in enumerate(list_seq):
             for cj, cc in enumerate(ss):
                 one_hot[si,cj+1,cc] = 1
-
+        #spend a time to figure out why it need to separate the one_hot into two arrays
             one_hot[si,-1,0] = 1
             one_hot[si,-2,0] = 1
             one_hot[si,-3,0] = 1
 
         return one_hot[:,0:-1,:], one_hot[:,1:,:]
-        
+
+def check_in_char_set(ls_smiles, char_set):
+    ls_smiles_new = ls_smiles.copy()
+    for s in ls_smiles:
+        j=0
+        while j<len(s):
+            if j<len(s)-1 and s[j:j+2] in char_set:
+                j=j+2
+            elif s[j] in char_set:
+                j=j+1
+            elif s[j:j+2] not in char_set and s[j] not in char_set:
+                ls_smiles_new.remove(s)
+                break  
+    return ls_smiles_new        
         
 
 # test
 if __name__ == '__main__':
-    model_IE = load_model("model/ECFP_num_IE.h5")
-    model_EA = load_model("model/ECFP_num_EA.h5")
-    a = molecules(['N#C[SH](N)(C=O)O1C=CN=C1'])
-    fp_ECFP = a.ECFP_num()
-    IE = model_IE.predict(fp_ECFP)
-    EA = model_EA.predict(fp_ECFP)
+    # model_IE = load_model("model/ECFP_num_IE.h5")
+    # model_EA = load_model("model/ECFP_num_EA.h5")
+    # a = molecules(['N#C[SH](N)(C=O)O1C=CN=C1'])
+    # fp_ECFP = a.ECFP_num()
+    # IE = model_IE.predict(fp_ECFP)
+    # EA = model_EA.predict(fp_ECFP)
 
-    print(IE, EA)
+    # print(IE, EA)
+
+    char_set=[" ", "@", "H", "N", "S", "o", "i", "6", "I", "]", "P", "5", ")", "4", "8", "B", "F", 
+           "3", "9", "c", "-", "2", "p", "0", "n", "C", "(", "=", "+", "#", "1", "/", "7", 
+           "s", "O", "[", "Cl", "Br", "\\"]
+    a = molecules(['N#C[SH](N)(C=O)O1C=CN=C1', 'P(F)(F)(F)(F)(F)F.[Zn]', 'COC(=O)C=O','[Mg].[BH4].[BH4]'])
+    new_list = a.check_in_char_set(char_set)
+    print(new_list)
+
+

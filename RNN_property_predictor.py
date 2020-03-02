@@ -139,7 +139,6 @@ class Model(object):
     
     
     def reload(self, model_name):    
-        
         with self.session.as_default() as sess:
             sess.run(tf.global_variables_initializer())
             saver = tf.train.import_meta_graph(model_name+'.meta')
