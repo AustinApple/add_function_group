@@ -10,7 +10,7 @@ import openbabel
 import argparse
 from keras.models import load_model
 import tensorflow
-from tensorflow.contrib.keras import preprocessing
+from tensorflow.keras import preprocessing
 
 class molecules():
     '''
@@ -114,8 +114,9 @@ if __name__ == '__main__':
     char_set=[" ", "@", "H", "N", "S", "o", "i", "6", "I", "]", "P", "5", ")", "4", "8", "B", "F", 
            "3", "9", "c", "-", "2", "p", "0", "n", "C", "(", "=", "+", "#", "1", "/", "7", 
            "s", "O", "[", "Cl", "Br", "\\"]
-    a = molecules(['N#C[SH](N)(C=O)O1C=CN=C1', 'P(F)(F)(F)(F)(F)F.[Zn]', 'COC(=O)C=O','[Mg].[BH4].[BH4]'])
-    new_list = a.check_in_char_set(char_set)
-    print(new_list)
+    ls_smi = ['N#C[SH](N)(C=O)O1C=CN=C1', 'P(F)(F)(F)(F)(F)F.[Zn]', 'COC(=O)C=O','[Mg].[BH4].[BH4]']
+    ls_smi = check_in_char_set(ls_smi, char_set)
+    
+
 
 
