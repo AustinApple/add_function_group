@@ -1,12 +1,14 @@
 from __future__ import print_function
 
 import numpy as np
-import tensorflow as tf
+#import tensorflow as tf
 import pickle
+import tensorflow.compat.v1 as tf 
+tf.compat.v1.disable_v2_behavior()
 
-config = tf.ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 1
-config.gpu_options.allow_growth = True
+# config = tf.ConfigProto()
+# config.gpu_options.per_process_gpu_memory_fraction = 1
+# config.gpu_options.allow_growth = True
 
 class Model(object):
 

@@ -56,11 +56,13 @@ class molecules():
         this function is to convert the smile inton one-hot encoding. 
         Parameter char_set includes all the character in all the SMILES. 
         '''
-    
+        
         char_to_int = dict((c,i) for i,c in enumerate(char_set))
         list_seq=[]
-        for s in self.ls_smiles:
-            seq=[]                
+        
+        for s in self.ls_smiles[:]:
+            
+            seq=[]                      
             j=0
             while j<len(s):
                 if j<len(s)-1 and s[j:j+2] in char_set:
@@ -69,11 +71,20 @@ class molecules():
                 elif s[j] in char_set:
                     seq.append(char_to_int[s[j]])
                     j=j+1
+                elif s[j:j+2] not in char_set and s[j] not in char_set:
+                    self.ls_smiles.remove(s)
+                    seq=[]
+                    break
+            if seq == []:
+                continue
             list_seq.append(seq)
-             
-        list_seq = preprocessing.sequence.pad_sequences(list_seq, padding='post')
         
-        one_hot = np.zeros((list_seq.shape[0], list_seq.shape[1]+4, len(char_set)), dtype=np.int32)
+        
+            
+             
+        list_seq = preprocessing.sequence.pad_sequences(list_seq, maxlen=40, padding='post')
+        
+        one_hot = np.zeros((list_seq.shape[0], list_seq.shape[1]+4, len(char_set)), dtype=np.int8)
 
         for si, ss in enumerate(list_seq):
             for cj, cc in enumerate(ss):
@@ -83,11 +94,14 @@ class molecules():
             one_hot[si,-2,0] = 1
             one_hot[si,-3,0] = 1
 
-        return one_hot[:,0:-1,:], one_hot[:,1:,:]
+        return one_hot[:,0:-1,:], one_hot[:,1:,:], self.ls_smiles
 
 def check_in_char_set(ls_smiles, char_set):
-    ls_smiles_new = ls_smiles.copy()
-    for s in ls_smiles:
+    '''
+    check whether characters of molecules in the char set.   This function could take a lot of time.
+    '''
+    
+    for s in ls_smiles[:]:
         j=0
         while j<len(s):
             if j<len(s)-1 and s[j:j+2] in char_set:
@@ -95,16 +109,16 @@ def check_in_char_set(ls_smiles, char_set):
             elif s[j] in char_set:
                 j=j+1
             elif s[j:j+2] not in char_set and s[j] not in char_set:
-                ls_smiles_new.remove(s)
+                ls_smiles.remove(s)
                 break  
-    return ls_smiles_new        
+    return ls_smiles        
         
 
 # test
 if __name__ == '__main__':
     # model_IE = load_model("model/ECFP_num_IE.h5")
     # model_EA = load_model("model/ECFP_num_EA.h5")
-    # a = molecules(['N#C[SH](N)(C=O)O1C=CN=C1'])
+    # a = molecules(['N#C[SH](N)(C=O)O1C=CN=C1'])   
     # fp_ECFP = a.ECFP_num()
     # IE = model_IE.predict(fp_ECFP)
     # EA = model_EA.predict(fp_ECFP)
