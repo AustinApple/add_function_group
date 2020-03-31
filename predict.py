@@ -78,7 +78,7 @@ def SMILES_onehot_prediction_batch(ls_smi, model_name=None, char_set=None, data_
        '''
        
        #========= normalization =========
-       Y = np.asarray(data_MP.as_matrix()[:,1:], dtype=np.float32)  # 1.IE   2.EA 
+       Y = np.asarray(data_MP.values[:,1:], dtype=np.float32)  # 1.IE   2.EA 
        scaler_Y = StandardScaler()
        scaler_Y.fit(Y)
        #=================================
@@ -203,23 +203,23 @@ if __name__ == '__main__':
 
 
        
-       start = time.time()
+       # start = time.time()
 
-       char_set=[" ", "@", "H", "N", "S", "o", "i", "6", "I", "]", "P", "5", ")", "4", "8", "B", "F", 
-              "3", "9", "c", "-", "2", "p", "0", "n", "C", "(", "=", "+", "#", "1", "/", "7", 
-              "s", "O", "[", "Cl", "Br", "\\"]
-       data_MP = pd.read_csv('MP_clean_canonize_cut.csv')
-       ls_smi = pd.read_csv("OUTPUT_multi_latest/all_le_40.csv")['smiles'].tolist()[:100000]
-       ls_smi_new, IE, EA = SMILES_onehot_prediction(ls_smi, model_name='model_SMILES/model',char_set=char_set, data_MP=data_MP)
+       # char_set=[" ", "@", "H", "N", "S", "o", "i", "6", "I", "]", "P", "5", ")", "4", "8", "B", "F", 
+       #        "3", "9", "c", "-", "2", "p", "0", "n", "C", "(", "=", "+", "#", "1", "/", "7", 
+       #        "s", "O", "[", "Cl", "Br", "\\"]
+       # data_MP = pd.read_csv('MP_clean_canonize_cut.csv')
+       # ls_smi = pd.read_csv("OUTPUT_multi_latest/all_le_40.csv")['smiles'].tolist()[:100000]
+       # ls_smi_new, IE, EA = SMILES_onehot_prediction_batch(ls_smi, model_name='model_SMILES/model',char_set=char_set, data_MP=data_MP)
        
-       data = pd.DataFrame(columns=['smiles', 'IE', 'EA'])
-       data['smiles'] = ls_smi_new
-       data['IE'] = IE
-       data['EA'] = EA
-       data.to_csv("result_test.csv", index=False)
+       # data = pd.DataFrame(columns=['smiles', 'IE', 'EA'])
+       # data['smiles'] = ls_smi_new
+       # data['IE'] = IE
+       # data['EA'] = EA
+       # data.to_csv("result_test_2.csv", index=False)
        
-       end = time.time()
-       print("the execution time "+str(end-start))
+       # end = time.time()
+       # print("the execution time "+str(end-start))
 
 
 
