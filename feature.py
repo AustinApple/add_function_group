@@ -8,9 +8,11 @@ import numpy as np
 import os 
 import openbabel
 import argparse
+from biopandas.mol2 import PandasMol2
 from keras.models import load_model
 import tensorflow
 from tensorflow.keras import preprocessing
+
 
 class molecules():
     '''
@@ -18,9 +20,29 @@ class molecules():
     '''
     def __init__(self,ls_smiles):
         self.ls_smiles = ls_smiles
-
     
-        
+    def SYBYL(self, atomtype_set=['Al','B','Br','C.1','C.2','C.3','C.ar','C.cat','Ca','Cl','F','H','Li',\
+                                  'Mg','N.1','N.2','N.3','N.4','N.am','N.ar','N.pl3','Na','O.2','O.3',\
+                                  'O.co2','P.3','S.2','S.3','S.O2','S.O','Si','Zn']):
+        '''
+        convert a list of smiles into SYBYL array
+        '''
+        atomtype_to_int = dict((a,i) for i,a in enumerate(atomtype_set))
+        array_fp = np.zeros((len(self.ls_smiles), len(atom_type)))
+        for i, smi in enumerate(self.smiles):
+            obconversion = openbabel.OBConversion()
+            obconversion.SetInAndOutFormats("smi", "mol2")
+            mol = openbabel.OBMol()
+            obconversion.ReadString(mol,smi)  # read molecule from database 
+            mol.AddHydrogens()
+            output_mol2 = obconversion.WriteString(mol)  # transform smiles into mol2
+            with open("molecule.mol2","w+") as file:   # write mol2 format into the file, molecule.mol2.
+                file.write(output_mol2)
+            molecule_mol2 = PandasMol2().read_mol2("molecule.mol2")  # use biopandas to static the discriptors
+            for atomtype in molecule_mol2.df['atom_type'].value_counts().index:
+                array_fp[i,atomtype_to_int[atomtype]] = molecule_mol2.df['atom_type'].value_counts()[atomtype]
+        return array_fp
+
     def ECFP(self, radius=2, nbits=2048):
         '''
         convert a list of smiles into ECFP array
