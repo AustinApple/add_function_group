@@ -29,7 +29,7 @@ class molecules():
         '''
         atomtype_to_int = dict((a,i) for i,a in enumerate(atomtype_set))
         array_fp = np.zeros((len(self.ls_smiles), len(atomtype_set)))
-        for i, smi in enumerate(self.smiles):
+        for i, smi in enumerate(self.ls_smiles):
             obconversion = openbabel.OBConversion()
             obconversion.SetInAndOutFormats("smi", "mol2")
             mol = openbabel.OBMol()
