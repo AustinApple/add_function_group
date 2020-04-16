@@ -54,7 +54,7 @@ class molecules():
             for j in range(nbits):
                 arr_fp[i,j] = fp[j]
         return arr_fp
-    
+        
     def ECFP_num(self, radius=2, nbits=2048):
         '''
         convert a list of smiles into ECFP_num array
@@ -106,17 +106,14 @@ class molecules():
              
         list_seq = preprocessing.sequence.pad_sequences(list_seq, maxlen=40, padding='post')
         
-        one_hot = np.zeros((list_seq.shape[0], list_seq.shape[1]+4, len(char_set)), dtype=np.int8)
+        one_hot = np.zeros((list_seq.shape[0], list_seq.shape[1], len(char_set)), dtype=np.int8)
 
         for si, ss in enumerate(list_seq):
             for cj, cc in enumerate(ss):
-                one_hot[si,cj+1,cc] = 1
-        #spend a time to figure out why it need to separate the one_hot into two arrays
-            one_hot[si,-1,0] = 1
-            one_hot[si,-2,0] = 1
-            one_hot[si,-3,0] = 1
+                one_hot[si,cj,cc] = 1
+  
 
-        return one_hot[:,0:-1,:], one_hot[:,1:,:], self.ls_smiles
+        return one_hot, self.ls_smiles
 
 def check_in_char_set(ls_smiles, char_set):
     '''
