@@ -28,7 +28,7 @@ class molecules():
         convert a list of smiles into SYBYL array
         '''
         atomtype_to_int = dict((a,i) for i,a in enumerate(atomtype_set))
-        array_fp = np.zeros((len(self.ls_smiles), len(atom_type)))
+        array_fp = np.zeros((len(self.ls_smiles), len(atomtype_set)))
         for i, smi in enumerate(self.smiles):
             obconversion = openbabel.OBConversion()
             obconversion.SetInAndOutFormats("smi", "mol2")
