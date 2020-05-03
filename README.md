@@ -1,5 +1,5 @@
 # add-functional-group
-This package is to add different functional groups on a molecule, and then this new molecule's electronic affinity (EA) and ionization energy (IE) can be predicted by machine learning model which has been trained by Material Project database.
+This package is to add different functional groups on a molecule, and then this new molecule's electronic affinity (EA) and ionization energy (IE) can be predicted by machine learning model which has been trained by data from Material Project database.
 
 ## Environment setting 
 ### via Anaconda
