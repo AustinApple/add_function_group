@@ -33,4 +33,4 @@ For example,
 adding four one kind of functional groups on molecules.  
 `python substitution.py -n 4 --single`  
 adding three different kinds of functional groups on molecules.  
-`python substitution.py -n 4 --single`
+`python substitution.py -n 3 --multi`
