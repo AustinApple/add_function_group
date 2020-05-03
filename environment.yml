@@ -1,4 +1,4 @@
-name: chemvae
+name: add-functional-group
 channels:
   - openbabel
   - rdkit
@@ -163,5 +163,3 @@ dependencies:
     - jupyterlab-server==1.0.6
     - pyrsistent==0.15.7
     - zipp==2.1.0
-prefix: /home/next-g/anaconda3/envs/chemvae
-
