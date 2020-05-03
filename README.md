@@ -1,6 +1,5 @@
 # add-functional-group
-This package is to add different functional groups on a molecule, and then this new molecule's electronic affinity (EA) and ionization energy (IE) can be predicted by machine learning model which has been trained by data from Material Project database.
-
+This code is to add functional groups on molecules. 
 ## Environment setting 
 ### via Anaconda
 ```
@@ -10,22 +9,27 @@ source activate molecule_feature_predict
 
 ## Tutorial 
 ### Preparing the materials
-Prepare a `.csv` file including molecules SMILES on which you want to add functional groups. And also prepare a `.csv` file including functional groups' name and SMARTS. 
-### Adding functional groups on moleculs
-`python substitution_multi.py`
+Prepare a `.csv` file including molecules SMILES on which you want to add functional groups (default=mainmol.csv). And also prepare a `.csv` file including functional groups' name and SMARTS (default=func.csv). 
+### Adding functional groups on molecules
+`python substitution.py`
 
 There are some arguments.
 
 ```
+  -h, --help            show this help message and exit
   -i MAINMOL, --mainmol MAINMOL
-                        main molecule file.csv
+                        main molecule
   -f FUNCTION, --function FUNCTION
-                          functional groups.csv
+                        functional group you want to add on molecules
   -o OUTPUT_PATH, --output_path OUTPUT_PATH
-                                the output path
+                        the output path
   -n NUMBER, --number NUMBER
-                      how many functional groups you want to add
+                        how many functional groups you want to add
+  --multi               add different kinds of functional groups
+  --singel              add one kind of function groups
 ```
 
-For example, I want to add four functional groups on a molecule.
-`python substitution_multi.py -n 4`
+For example, adding four one kind of functional groups on molecules.
+`python substitution.py -n 4 --single`
+adding three different kinds of functional groups on molecules.
+`python substitution.py -n 4 --single`
