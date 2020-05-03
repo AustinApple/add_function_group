@@ -1,6 +1,0 @@
-model_checkpoint_path: "SMILES(RNN)0.ckpt"
-all_model_checkpoint_paths: "../checkpoint_model/PP_model-496"
-all_model_checkpoint_paths: "../checkpoint_model/PP_model-497"
-all_model_checkpoint_paths: "../checkpoint_model/PP_model-498"
-all_model_checkpoint_paths: "../checkpoint_model/PP_model-499"
-all_model_checkpoint_paths: "SMILES(RNN)0.ckpt"
