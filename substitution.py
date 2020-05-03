@@ -6,13 +6,11 @@ import shutil
 from rdkit import Chem
 import random
 from itertools import combinations
-from keras.models import load_model
 import openbabel
 from rdkit.Chem import Fragments
 from rdkit.Chem.Draw import IPythonConsole
 from rdkit.Chem.Draw import MolDrawing, DrawingOptions,MolsToImage
 from rdkit import RDLogger
-from feature import molecules
 import shutil   
 import tracemalloc
 #from memory_profiler import profile
