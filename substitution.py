@@ -1,3 +1,4 @@
+__author__ = "Chih Ao Liao, Ming Hsiu Wu "
 import numpy as np
 import pandas as pd  
 import os
@@ -17,7 +18,6 @@ import tracemalloc
 #from memory_profiler import profile
 import time
 import argparse
-
 
 def canonize(smi):
     return Chem.MolToSmiles(Chem.MolFromSmiles(smi), isomericSmiles=True, canonical=True)
