@@ -29,7 +29,8 @@ There are some arguments.
   --singel              add one kind of function groups
 ```
 
-For example, adding four one kind of functional groups on molecules.
-`python substitution.py -n 4 --single`
-adding three different kinds of functional groups on molecules.
+For example,  
+adding four one kind of functional groups on molecules.  
+`python substitution.py -n 4 --single`  
+adding three different kinds of functional groups on molecules.  
 `python substitution.py -n 4 --single`
