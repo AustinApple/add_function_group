@@ -54,6 +54,20 @@ def sub_att(mainmol,fun_mol,pair):
         ls_submol.append(back)
     return ls_submol
 
+def ring_att(smi):
+    ls_submol = [] 
+    mol = Chem.MolFromSmiles(smi)
+    pair = list(combinations([i for i in range(mol.GetNumAtoms())],2))
+    for i in pair:
+        try:
+            edcombo = Chem.EditableMol(mol)
+            edcombo.AddBond(i[0],i[1],order=Chem.rdchem.BondType.SINGLE)
+            back = edcombo.GetMol()
+            back = Chem.MolToSmiles(back, isomericSmiles=True, canonical=True) # this function cannot detect the problematic smiles
+            ls_smi.append(back)
+        except: # only happen bond already exists
+            continue
+    return ls_submol
 
 
 if __name__ == '__main__':
@@ -120,6 +134,9 @@ if __name__ == '__main__':
             pair = sub_pair(mainmol[0],func[1],func[2])
             ls_submol = sub_att(mainmol[0],func[1],pair)
             dict_ls_submol['sub_mol_1st'] = canonize_ls(ls_submol)
+            ####=========== ring connection ==============
+            for smi in canonize_ls(ls_submol):
+                dict_ls_submol['sub_mol_1st'].extend(canonize_ls(ring_att(smi)))
             ####=========== later round ==============
             ####=========== add one kind of function groups ==============
             if args['single']:
@@ -134,6 +151,9 @@ if __name__ == '__main__':
                         except: 
                             continue
                     dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")] = ls_submol_later
+                    ####=========== ring connection ==============
+                    for smi in ls_submol_later:
+                        dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
             ####=========== add different kinds of function groups ==============
             if args['multi']:
                 for r in range(round-1):
@@ -148,10 +168,10 @@ if __name__ == '__main__':
                         except AttributeError as error:                  # some molecules cannot be read. But reason still need to verified
                             continue
                     dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")] = ls_submol_later
+                    ####=========== ring connection ==============
+                    for smi in ls_submol_later:
+                        dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
             ####============ Output (combine all the submol together into a list according to different funcitonal groups)====================
-
-        
-            #print(dict_ls_submol)
             for key, value in dict_ls_submol.items():
                 for i in value:
                     ls_submol_all.append(i)
