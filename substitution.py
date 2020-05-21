@@ -64,7 +64,7 @@ def ring_att(smi):
             edcombo.AddBond(i[0],i[1],order=Chem.rdchem.BondType.SINGLE)
             back = edcombo.GetMol()
             back = Chem.MolToSmiles(back, isomericSmiles=True, canonical=True) # this function cannot detect the problematic smiles
-            ls_smi.append(back)
+            ls_submol.append(back)
         except: # only happen bond already exists
             continue
     return ls_submol
@@ -83,8 +83,10 @@ if __name__ == '__main__':
                     help='how many functional groups you want to add', default=2, type=int)
     parser.add_argument('--multi',action='store_true',
                     help='add different kinds of functional groups')
-    parser.add_argument('--singel',action='store_true',
+    parser.add_argument('--single',action='store_true',
                     help='add one kind of function groups')
+    parser.add_argument('--ring',action='store_true',
+                    help='whether adding new bond to form ring')                
     args = vars(parser.parse_args())
     
     # disable RDKit logger
@@ -94,6 +96,8 @@ if __name__ == '__main__':
     time_start=time.time()
 
     #============= create directory "output" ==========================
+    output_path = args['output_path']
+    
     if os.path.isdir(output_path):
         shutil.rmtree(output_path)
         os.mkdir(output_path)
@@ -112,8 +116,8 @@ if __name__ == '__main__':
     #=============================================================
 
     #============== preparation for functional group ===================
-    ls_func_sma = pd.read_csv(args['function'])['smarts'].tolist()[:2]
-    ls_func_name = pd.read_csv(args['function'])['name'].tolist()[:2]
+    ls_func_sma = pd.read_csv(args['function'])['smarts'].tolist()
+    ls_func_name = pd.read_csv(args['function'])['name'].tolist()
 
     ls_func_name_mol_num = []
     for i in range(len(ls_func_sma)):
@@ -152,8 +156,9 @@ if __name__ == '__main__':
                             continue
                     dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")] = ls_submol_later
                     ####=========== ring connection ==============
-                    for smi in ls_submol_later:
-                        dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
+                    if args['ring']:
+                        for smi in ls_submol_later:
+                            dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
             ####=========== add different kinds of function groups ==============
             if args['multi']:
                 for r in range(round-1):
@@ -169,8 +174,9 @@ if __name__ == '__main__':
                             continue
                     dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")] = ls_submol_later
                     ####=========== ring connection ==============
-                    for smi in ls_submol_later:
-                        dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
+                    if args['ring']:
+                        for smi in ls_submol_later:
+                            dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
             ####============ Output (combine all the submol together into a list according to different funcitonal groups)====================
             for key, value in dict_ls_submol.items():
                 for i in value:
