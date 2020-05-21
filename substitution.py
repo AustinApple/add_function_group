@@ -139,8 +139,9 @@ if __name__ == '__main__':
             ls_submol = sub_att(mainmol[0],func[1],pair)
             dict_ls_submol['sub_mol_1st'] = canonize_ls(ls_submol)
             ####=========== ring connection ==============
-            for smi in canonize_ls(ls_submol):
-                dict_ls_submol['sub_mol_1st'].extend(canonize_ls(ring_att(smi)))
+            if args['ring']:
+                for smi in canonize_ls(ls_submol):
+                    dict_ls_submol['sub_mol_1st'].extend(canonize_ls(ring_att(smi)))
             ####=========== later round ==============
             ####=========== add one kind of function groups ==============
             if args['single']:
