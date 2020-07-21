@@ -64,7 +64,6 @@ def ring_att(smi):
             edcombo.AddBond(i[0],i[1],order=Chem.rdchem.BondType.SINGLE)
             back = edcombo.GetMol()
             back = Chem.MolToSmiles(back, isomericSmiles=True, canonical=True) # this function cannot detect the problematic smiles
-            print(back)
             ls_submol.append(back)
         except: # only happen bond already exists
             continue
