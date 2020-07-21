@@ -13,9 +13,10 @@ from rdkit.Chem.Draw import MolDrawing, DrawingOptions,MolsToImage
 from rdkit import RDLogger
 import shutil   
 import tracemalloc
-#from memory_profiler import profile
+from memory_profiler import profile
 import time
 import argparse
+import multiprocessing
 
 def canonize(smi):
     return Chem.MolToSmiles(Chem.MolFromSmiles(smi), isomericSmiles=True, canonical=True)
@@ -26,10 +27,9 @@ def canonize_ls(ls_smi):
         try:
             mol = Chem.MolToSmiles(Chem.MolFromSmiles(smi), isomericSmiles=True, canonical=True)
             ls_mol.append(mol)
-            ls_mol = sorted(set(ls_mol))
         except:
             continue
-    return ls_mol
+    return sorted(set(ls_mol))
 
 
 def sub_pair(main_smi,fun_mol,fun_num):
@@ -64,6 +64,7 @@ def ring_att(smi):
             edcombo.AddBond(i[0],i[1],order=Chem.rdchem.BondType.SINGLE)
             back = edcombo.GetMol()
             back = Chem.MolToSmiles(back, isomericSmiles=True, canonical=True) # this function cannot detect the problematic smiles
+            print(back)
             ls_submol.append(back)
         except: # only happen bond already exists
             continue
@@ -71,7 +72,7 @@ def ring_att(smi):
 
 
 if __name__ == '__main__':
-
+    
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--mainmol',
                     help='main molecule', default='mainmol.csv')
@@ -80,7 +81,9 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output_path',
                     help='the output path', default='OUTPUT')
     parser.add_argument('-n', '--number',
-                    help='how many functional groups you want to add', default=2, type=int)
+                    help='how many functional groups you want to add', default=1, type=int)
+    parser.add_argument('-p', '--number_processor',
+                    help='how many processor need to use', default=None, type=int)
     parser.add_argument('--multi',action='store_true',
                     help='add different kinds of functional groups')
     parser.add_argument('--single',action='store_true',
@@ -125,14 +128,15 @@ if __name__ == '__main__':
     #==================================================================
 
     #============== start to add functional group on the main molecule ===================
-    for mainmol in ls_main_smi_name:
+    # @profile
+    def run(mainmol):
+   
         print("==================== Main Molecules",mainmol[1],"====================")
-
         for func in ls_func_name_mol_num:
             
             dict_ls_submol = {}
             ls_submol_all = []
-         
+            
             print("================func",func[0],"==============")
             print('#####========== 1st round ===========')
             pair = sub_pair(mainmol[0],func[1],func[2])
@@ -141,7 +145,10 @@ if __name__ == '__main__':
             ####=========== ring connection ==============
             if args['ring']:
                 for smi in canonize_ls(ls_submol):
-                    dict_ls_submol['sub_mol_1st'].extend(canonize_ls(ring_att(smi)))
+                    try:
+                        dict_ls_submol['sub_mol_1st'].extend(canonize_ls())
+                    except:
+                        continue
             ####=========== later round ==============
             ####=========== add one kind of function groups ==============
             if args['single']:
@@ -159,7 +166,10 @@ if __name__ == '__main__':
                     ####=========== ring connection ==============
                     if args['ring']:
                         for smi in ls_submol_later:
-                            dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
+                            try:
+                                dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
+                            except:
+                                continue
             ####=========== add different kinds of function groups ==============
             if args['multi']:
                 for r in range(round-1):
@@ -177,20 +187,30 @@ if __name__ == '__main__':
                     ####=========== ring connection ==============
                     if args['ring']:
                         for smi in ls_submol_later:
-                            dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
+                            try:
+                                dict_ls_submol['sub_mol_{}'.format(str(r+2)+"st")].extend(canonize_ls(ring_att(smi)))
+                            except:
+                                continue
             ####============ Output (combine all the submol together into a list according to different funcitonal groups)====================
             for key, value in dict_ls_submol.items():
                 for i in value:
                     ls_submol_all.append(i)
-       
+        
 
             data = pd.DataFrame({'smiles':ls_submol_all})
             data.to_csv(output_path+'/'+mainmol[1]+'_'+func[0]+'.csv', index=False)
+
+ 
+    #========= running different mainmols on different cores (parallel) ===============
+    
+    with multiprocessing.Pool(processes=args['number_processor']) as pool:
+        pool.map(run, [mainmol for mainmol in ls_main_smi_name])        
+
     #========= concat all the generated molecules =====================
     sub_file = os.listdir(args['output_path'])
     ls_df_all = []
     i=0
-    # to prevent memory leaks
+    #to prevent memory leaks
     for batch in range(len(sub_file)):
         ls_df = [pd.read_csv(output_path+'/'+name) for name in sub_file[i:i+1]]
         ls_df_all.extend(ls_df)     
