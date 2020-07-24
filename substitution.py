@@ -145,7 +145,7 @@ if __name__ == '__main__':
             if args['ring']:
                 for smi in canonize_ls(ls_submol):
                     try:
-                        dict_ls_submol['sub_mol_1st'].extend(canonize_ls())
+                        dict_ls_submol['sub_mol_1st'].extend(canonize_ls(ring_att(smi)))
                     except:
                         continue
             ####=========== later round ==============
