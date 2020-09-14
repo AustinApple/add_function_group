@@ -1,5 +1,6 @@
 # add-functional-group
-This code is to add functional groups on molecules. 
+This code is to add functional groups on molecules.
+![image](https://github.com/AustinApple/add_function_group/blob/master/molecule_modification_algorithm.001.png)
 ## Environment setting 
 ### via Anaconda
 ```
