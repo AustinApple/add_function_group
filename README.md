@@ -1,5 +1,9 @@
 # add-functional-group
-This code is to add functional groups on molecules. The following schematic diagram shows the workflow of the molecular modification.
+This code is to add functional groups on molecules. 
+
+The steps are as follows. 1. Label each atom of given molecule and the functional group. 2. Form the pair between one of the atoms from given molecule and one of the attached sites from functional group. 3. Add a bond according to the pairs to attach functional group to the given molecule. 4. Check whether the molecular structure violates chemical rules. 5. Label the generated molecules again. 6. Form the pairs. 7. Add a bond according to the pairs to form a ring. 8. Check whether the molecular structure violates chemical rules.
+
+The below schematic diagram shows the workflow of the molecular modification.  
 ![image](https://github.com/AustinApple/add_function_group/blob/master/molecule_modification_algorithm.001.png)
 ## Environment setting 
 ### via Anaconda
